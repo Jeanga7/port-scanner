@@ -30,8 +30,24 @@ func ScanUDP(host string, port int) {
 		fmt.Printf("Port %d is closed (%s)\n", port, GetServiceByPort(port))
 		return
 	}
+	defer conn.Close()
 
-	conn.Close()
+	// pour verification supp, j'envoie un paquet UDP vide
+	_, err = conn.Write([]byte(""))
+	if err != nil {
+		fmt.Printf("Port %d is closed (%s)\n", port, GetServiceByPort(port))
+		return
+	}
+
+	//definition d'un delai pour la reponse
+	conn.SetReadDeadline(time.Now().Add(2 * time.Second))
+	buffer := make([]byte, 1024)
+	_, err = conn.Read(buffer)
+	if err != nil {
+		//si pas de reponse, on suppose que le port est fermé
+		fmt.Printf("Port %d is closed (%s)\n", port, GetServiceByPort(port))
+		return
+	}
 
 	fmt.Printf("Port %d is open (%s)\n", port, GetServiceByPort(port))
 }

@@ -125,6 +125,17 @@ Pour tester un port en lançant un serveur web local, utilisez cette commande :
 python -m http.server 80
 ```
 
+#### Ouverture de port sur windows (firewall)
+```bash 
+netsh advfirewall firewall add rule name="Open TCP 8080" dir=in action=allow protocol=TCP localport=8080
+netsh advfirewall firewall add rule name="Open UDP 9090" dir=in action=allow protocol=UDP localport=9090
+```
+#### Fermeture de port sur windows (firewall)
+```bash 
+netsh advfirewall firewall delete rule name="Open TCP 8080"
+netsh advfirewall firewall delete rule name="Open UDP 9090"
+```
+
 ---
 
 ## 📝 **Détails supplémentaires**
